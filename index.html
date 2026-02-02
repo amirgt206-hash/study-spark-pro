@@ -1,0 +1,1838 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MStudy Pro | برنامه مدیریت مطالعه حرفه‌ای</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        :root {
+            --primary: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            --secondary: #ff6b6b;
+            --success: #4cd964;
+            --warning: #ffd166;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --text-dark: #333;
+            --text-light: #f8f9fa;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+            --border-radius: 20px;
+            --glass: rgba(255, 255, 255, 0.2);
+        }
+
+        .dark-theme {
+            --primary: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            --card-bg: rgba(30, 30, 46, 0.95);
+            --light: #162447;
+            --text-dark: #f0f0f0;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            --glass: rgba(0, 0, 0, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Vazirmatn', 'Poppins', sans-serif;
+            background: var(--primary);
+            color: var(--text-dark);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .glass-effect {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* ذرات معلق */
+        #particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        /* هدر */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+        }
+
+        .dark-theme .header {
+            background: rgba(26, 26, 46, 0.95);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 15px;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            box-shadow: 0 8px 20px rgba(106, 17, 203, 0.3);
+        }
+
+        .logo-text h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: var(--primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo-text p {
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            opacity: 0.8;
+        }
+
+        .nav {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .nav-btn {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 0.7rem 1.5rem;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-btn:hover, .nav-btn.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 5px 15px rgba(106, 17, 203, 0.3);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.7rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .user-profile:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: 0 5px 15px rgba(106, 17, 203, 0.3);
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .user-level {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--text-dark);
+        }
+
+        /* محتوای اصلی */
+        .main-container {
+            margin-top: 100px;
+            padding: 2rem;
+            max-width: 1600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* هیرو سکشن */
+        .hero {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 3rem;
+            align-items: center;
+            margin-bottom: 3rem;
+            padding: 3rem;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content h2 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            background: var(--primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            background: var(--primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-visual {
+            position: relative;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .floating-element {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border-radius: 20px;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            box-shadow: var(--shadow);
+            animation: floating 3s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* داشبورد */
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(106, 17, 203, 0.1);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .card-title i {
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        /* تایمر */
+        .timer-container {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .timer-display {
+            font-size: 5rem;
+            font-weight: 800;
+            margin: 2rem 0;
+            background: var(--primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-family: 'Poppins', monospace;
+        }
+
+        .timer-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 15px;
+            font-family: inherit;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 8px 20px rgba(106, 17, 203, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(106, 17, 203, 0.1);
+            color: #6a11cb;
+            border: 2px solid rgba(106, 17, 203, 0.3);
+        }
+
+        .btn-danger {
+            background: rgba(255, 107, 107, 0.1);
+            color: #ff6b6b;
+            border: 2px solid rgba(255, 107, 107, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .timer-settings {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .setting-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.8rem 1.5rem;
+            border-radius: 15px;
+        }
+
+        .setting-group input {
+            width: 60px;
+            padding: 0.5rem;
+            border: 2px solid rgba(106, 17, 203, 0.3);
+            border-radius: 10px;
+            text-align: center;
+            font-family: inherit;
+            font-weight: 600;
+        }
+
+        /* درخت */
+        .tree-container {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .tree {
+            font-size: 10rem;
+            margin: 1rem 0;
+            transition: var(--transition);
+        }
+
+        .tree-level {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .tree-progress {
+            width: 100%;
+            height: 20px;
+            background: rgba(106, 17, 203, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 1.5rem 0;
+        }
+
+        .tree-progress-fill {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 10px;
+            transition: width 1s ease;
+        }
+
+        /* انگیزه */
+        .motivation-container {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .quote-box {
+            background: linear-gradient(135deg, rgba(106, 17, 203, 0.1), rgba(37, 117, 252, 0.1));
+            padding: 2.5rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 2rem;
+        }
+
+        .quote {
+            font-size: 1.4rem;
+            font-style: italic;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .quote-author {
+            font-weight: 700;
+            color: #6a11cb;
+        }
+
+        /* پیشرفت */
+        .progress-container {
+            text-align: center;
+            padding: 1.5rem;
+        }
+
+        .progress-ring {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 2rem;
+        }
+
+        .progress-circle {
+            transform: rotate(-90deg);
+        }
+
+        .progress-bg {
+            fill: none;
+            stroke: rgba(106, 17, 203, 0.1);
+            stroke-width: 12;
+        }
+
+        .progress-fill {
+            fill: none;
+            stroke: url(#gradient);
+            stroke-width: 12;
+            stroke-linecap: round;
+            stroke-dasharray: 565;
+            stroke-dashoffset: 565;
+            transition: stroke-dashoffset 1.5s ease;
+        }
+
+        .progress-text {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 800;
+            fill: var(--text-dark);
+        }
+
+        /* دستاوردها */
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1.5rem;
+            padding: 1.5rem;
+        }
+
+        .achievement-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 20px;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .achievement-item:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .achievement-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* بخش سازنده */
+        .creator-section {
+            background: linear-gradient(135deg, rgba(106, 17, 203, 0.1), rgba(37, 117, 252, 0.1));
+            border-radius: var(--border-radius);
+            padding: 4rem;
+            margin-bottom: 3rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .creator-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--primary);
+        }
+
+        .creator-avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: var(--primary);
+            margin: 0 auto 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3.5rem;
+            font-weight: bold;
+            box-shadow: 0 20px 40px rgba(106, 17, 203, 0.3);
+        }
+
+        .creator-name {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            background: var(--primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .creator-title {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            margin-bottom: 1.5rem;
+        }
+
+        .creator-bio {
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+
+        .contact-info {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-top: 2rem;
+            text-align: right;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 1rem;
+            justify-content: flex-end;
+        }
+
+        .contact-item i {
+            color: #6a11cb;
+            width: 30px;
+        }
+
+        .signature {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3rem;
+            color: #6a11cb;
+            margin-top: 2rem;
+        }
+
+        /* فوتر */
+        .footer {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 4rem 2rem;
+            margin-top: 4rem;
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: var(--primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .footer-signature {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            color: white;
+            margin: 1.5rem 0;
+        }
+
+        /* دکمه‌های عملیاتی */
+        .action-buttons {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 100;
+        }
+
+        .action-btn {
+            width: 70px;
+            height: 70px;
+            border-radius: 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            box-shadow: 0 15px 35px rgba(106, 17, 203, 0.4);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 20px 40px rgba(106, 17, 203, 0.5);
+        }
+
+        /* مودال */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 3rem;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(106, 17, 203, 0.1);
+        }
+
+        .modal-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-dark);
+        }
+
+        /* فرم */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 1rem;
+            border-radius: 10px;
+            border: 2px solid rgba(106, 17, 203, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-dark);
+            font-family: inherit;
+            font-size: 1rem;
+        }
+
+        /* ریسپانسیو */
+        @media (max-width: 1200px) {
+            .hero {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 1rem;
+            }
+            
+            .nav {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: flex;
+            }
+            
+            .user-info {
+                display: none;
+            }
+            
+            .main-container {
+                padding: 1rem;
+                margin-top: 80px;
+            }
+            
+            .hero {
+                padding: 2rem 1rem;
+            }
+            
+            .hero-content h2 {
+                font-size: 2.2rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .timer-display {
+                font-size: 3.5rem;
+            }
+            
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .creator-section {
+                padding: 2rem 1rem;
+            }
+            
+            .creator-name {
+                font-size: 2rem;
+            }
+            
+            .action-buttons {
+                bottom: 1rem;
+                right: 1rem;
+            }
+            
+            .action-btn {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .timer-controls {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            .achievements-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ذرات -->
+    <div id="particles"></div>
+    
+    <!-- هدر -->
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-brain"></i>
+            </div>
+            <div class="logo-text">
+                <h1>MStudy Pro</h1>
+                <p>برنامه مدیریت مطالعه حرفه‌ای</p>
+            </div>
+        </div>
+        
+        <div class="mobile-menu-btn" id="mobileMenuBtn">
+            <i class="fas fa-bars"></i>
+        </div>
+        
+        <nav class="nav">
+            <a href="#" class="nav-btn active" data-section="dashboard">
+                <i class="fas fa-home"></i>
+                <span>داشبورد</span>
+            </a>
+            <a href="#" class="nav-btn" data-section="profile">
+                <i class="fas fa-user"></i>
+                <span>پروفایل</span>
+            </a>
+            <a href="#" class="nav-btn" data-section="stats">
+                <i class="fas fa-chart-line"></i>
+                <span>آمار</span>
+            </a>
+        </nav>
+        
+        <div class="user-profile" id="userProfile">
+            <div class="user-avatar" id="userAvatar">?</div>
+            <div class="user-info">
+                <div class="user-name" id="userDisplayName">مهمان</div>
+                <div class="user-level">سطح <span id="userLevel">۱</span></div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- محتوای اصلی -->
+    <main class="main-container">
+        <!-- هیرو -->
+        <section class="hero">
+            <div class="hero-content">
+                <h2 id="welcomeMessage">به MStudy Pro خوش آمدید!</h2>
+                <p>برنامه‌ای کامل برای مدیریت زمان مطالعه، افزایش تمرکز و دستیابی به بهترین نتایج.</p>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="studyStreak">۰</div>
+                        <div>روز متوالی</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalHours">۰</div>
+                        <div>ساعت مطالعه</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="achievementsCount">۰</div>
+                        <div>دستاورد</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="hero-visual">
+                <div class="floating-element" style="top: 0; left: 0; animation-delay: 0s;">
+                    <i class="fas fa-book-open"></i>
+                </div>
+                <div class="floating-element" style="top: 50px; right: 30px; animation-delay: 0.5s; background: var(--secondary);">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="floating-element" style="bottom: 0; left: 50%; transform: translateX(-50%); animation-delay: 1s; background: var(--success);">
+                    <i class="fas fa-trophy"></i>
+                </div>
+            </div>
+        </section>
+        
+        <!-- داشبورد -->
+        <div class="dashboard">
+            <!-- تایمر -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <i class="fas fa-clock"></i>
+                        تایمر مطالعه
+                    </div>
+                    <div class="timer-mode">
+                        <span id="timerMode">تمرکز</span>
+                    </div>
+                </div>
+                <div class="timer-container">
+                    <div class="timer-display" id="timerDisplay">25:00</div>
+                    
+                    <div class="timer-controls">
+                        <button class="btn btn-primary" id="startTimer">
+                            <i class="fas fa-play"></i> شروع
+                        </button>
+                        <button class="btn btn-secondary" id="pauseTimer">
+                            <i class="fas fa-pause"></i> توقف
+                        </button>
+                        <button class="btn btn-danger" id="resetTimer">
+                            <i class="fas fa-redo"></i> ریست
+                        </button>
+                    </div>
+                    
+                    <div class="timer-settings">
+                        <div class="setting-group">
+                            <label>تمرکز:</label>
+                            <input type="number" id="focusTime" min="1" max="120" value="25"> دقیقه
+                        </div>
+                        <div class="setting-group">
+                            <label>استراحت:</label>
+                            <input type="number" id="breakTime" min="1" max="30" value="5"> دقیقه
+                        </div>
+                    </div>
+                    
+                    <div class="session-count">
+                        جلسات امروز: <span id="sessionCount">۰</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- درخت -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <i class="fas fa-tree"></i>
+                        درخت تمرکز
+                    </div>
+                </div>
+                <div class="tree-container">
+                    <div class="tree" id="studyTree">🌱</div>
+                    <div class="tree-level">سطح <span id="treeLevel">۱</span></div>
+                    <div class="tree-progress">
+                        <div class="tree-progress-fill" id="treeProgressFill" style="width: 0%"></div>
+                    </div>
+                    <div class="progress-text">پیشرفت: <span id="treeProgressText">۰</span>%</div>
+                </div>
+            </div>
+            
+            <!-- انگیزه -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <i class="fas fa-quote-right"></i>
+                        انگیزه روز
+                    </div>
+                    <button class="btn btn-secondary" id="newQuote">
+                        <i class="fas fa-sync"></i>
+                    </button>
+                </div>
+                <div class="motivation-container">
+                    <div class="quote-box">
+                        <div class="quote" id="dailyQuote">
+                            "موفقیت نهایی نیست، شکست مرگبار نیست؛ شجاعت ادامه دادن است که اهمیت دارد."
+                        </div>
+                        <div class="quote-author" id="quoteAuthor">- وینستون چرچیل</div>
+                    </div>
+                    <button class="btn btn-primary" id="playMusic">
+                        <i class="fas fa-play-circle"></i> پخش موزیک تمرکز
+                    </button>
+                </div>
+            </div>
+            
+            <!-- پیشرفت -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <i class="fas fa-chart-pie"></i>
+                        پیشرفت هفتگی
+                    </div>
+                </div>
+                <div class="progress-container">
+                    <div class="progress-ring">
+                        <svg viewBox="0 0 150 150">
+                            <defs>
+                                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#6a11cb" />
+                                    <stop offset="100%" stop-color="#2575fc" />
+                                </linearGradient>
+                            </defs>
+                            <circle class="progress-bg" cx="75" cy="75" r="60"></circle>
+                            <circle class="progress-fill" cx="75" cy="75" r="60" id="progressCircle"></circle>
+                            <text class="progress-text" x="75" y="80" text-anchor="middle">۰%</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- دستاوردها -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <i class="fas fa-medal"></i>
+                        دستاوردها
+                    </div>
+                </div>
+                <div class="achievements-grid" id="achievementsGrid">
+                    <!-- دستاوردها -->
+                </div>
+            </div>
+            
+            <!-- مدیریت داده -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <i class="fas fa-database"></i>
+                        مدیریت داده
+                    </div>
+                </div>
+                <div class="timer-controls">
+                    <button class="btn btn-primary" id="backupData">
+                        <i class="fas fa-save"></i> پشتیبان‌گیری
+                    </button>
+                    <button class="btn btn-secondary" id="restoreData">
+                        <i class="fas fa-upload"></i> بازیابی
+                    </button>
+                    <button class="btn btn-danger" id="resetData">
+                        <i class="fas fa-trash"></i> ریست
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- بخش سازنده -->
+        <section class="creator-section">
+            <div class="creator-avatar">ا.ش</div>
+            <h2 class="creator-name">امیرحسین شرکائی</h2>
+            <div class="creator-title">دانش‌آموز مدرسه مهر آفرینان</div>
+            <p class="creator-bio">
+                من امیرحسین شرکائی، دانش‌آموز مدرسه مهر آفرینان هستم. این برنامه را برای کمک به دانش‌آموزان در مدیریت بهتر زمان مطالعه طراحی کرده‌ام.
+            </p>
+            
+            <div class="contact-info">
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>آدرس: استان تهران، صفادشت، شهرک امید</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <span>تلفن: ۰۹۳۷۱۹۳۲۰۶۶</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>دانش‌آموز مدرسه مهر آفرینان</span>
+                </div>
+            </div>
+            
+            <div class="signature">امیرحسین شرکائی</div>
+        </section>
+    </main>
+    
+    <!-- دکمه‌های عملیاتی -->
+    <div class="action-buttons">
+        <button class="action-btn" id="themeToggle">
+            <i class="fas fa-moon"></i>
+        </button>
+        <button class="action-btn" id="musicToggle">
+            <i class="fas fa-music"></i>
+        </button>
+        <button class="action-btn" id="emergencyBtn">
+            <i class="fas fa-bolt"></i>
+        </button>
+    </div>
+    
+    <!-- مودال پروفایل -->
+    <div class="modal" id="profileModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">پروفایل کاربری</div>
+                <button class="modal-close" id="closeProfileModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="firstName">نام:</label>
+                    <input type="text" id="firstName" placeholder="نام خود را وارد کنید">
+                </div>
+                <div class="form-group">
+                    <label for="lastName">نام خانوادگی:</label>
+                    <input type="text" id="lastName" placeholder="نام خانوادگی خود را وارد کنید">
+                </div>
+                <button class="btn btn-primary" id="saveProfile" style="width: 100%;">
+                    <i class="fas fa-save"></i> ذخیره
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- مودال پشتیبان‌گیری -->
+    <div class="modal" id="backupModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">پشتیبان‌گیری</div>
+                <button class="modal-close" id="closeBackupModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>کد پشتیبان شما:</p>
+                <textarea id="backupDataText" style="width: 100%; height: 150px; padding: 1rem; border-radius: 10px; border: 2px solid rgba(106, 17, 203, 0.3); background: rgba(255, 255, 255, 0.1); margin: 1rem 0;" readonly></textarea>
+                <button class="btn btn-primary" id="copyBackup" style="width: 100%;">
+                    <i class="fas fa-copy"></i> کپی
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- مودال بازیابی -->
+    <div class="modal" id="restoreModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">بازیابی داده</div>
+                <button class="modal-close" id="closeRestoreModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>کد پشتیبان را وارد کنید:</p>
+                <textarea id="restoreDataText" style="width: 100%; height: 150px; padding: 1rem; border-radius: 10px; border: 2px solid rgba(106, 17, 203, 0.3); background: rgba(255, 255, 255, 0.1); margin: 1rem 0;" placeholder="کد پشتیبان..."></textarea>
+                <button class="btn btn-primary" id="confirmRestore" style="width: 100%;">
+                    <i class="fas fa-upload"></i> بازیابی
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- نوتیفیکیشن -->
+    <div class="notification" id="notification" style="display: none; position: fixed; top: 100px; right: 20px; background: var(--primary); color: white; padding: 1rem 2rem; border-radius: 10px; box-shadow: var(--shadow); z-index: 3000;">
+        <div id="notificationMessage">پیام</div>
+    </div>
+
+    <script>
+        // ============================================
+        // سیستم ذخیره‌سازی
+        // ============================================
+        class DataManager {
+            constructor() {
+                this.STORAGE_KEY = 'mstudy_pro_data';
+                this.defaultData = {
+                    version: '1.0',
+                    user: {
+                        firstName: '',
+                        lastName: '',
+                        fullName: '',
+                        level: 1,
+                        totalHours: 0,
+                        streak: 0,
+                        lastLogin: null
+                    },
+                    stats: {
+                        today: { minutes: 0, sessions: 0 },
+                        week: { minutes: 0 },
+                        month: { minutes: 0 }
+                    },
+                    tree: {
+                        level: 1,
+                        experience: 0,
+                        maxExperience: 100
+                    },
+                    achievements: [],
+                    timer: {
+                        focusTime: 25,
+                        breakTime: 5,
+                        sessionsToday: 0
+                    }
+                };
+                this.data = this.loadData();
+            }
+            
+            loadData() {
+                const saved = localStorage.getItem(this.STORAGE_KEY);
+                if (saved) {
+                    return JSON.parse(saved);
+                }
+                return this.defaultData;
+            }
+            
+            saveData() {
+                localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.data));
+            }
+            
+            updateUserProfile(firstName, lastName) {
+                this.data.user.firstName = firstName;
+                this.data.user.lastName = lastName;
+                this.data.user.fullName = `${firstName} ${lastName}`;
+                this.saveData();
+                return true;
+            }
+            
+            addStudyTime(minutes) {
+                this.data.stats.today.minutes += minutes;
+                this.data.stats.today.sessions++;
+                this.data.stats.week.minutes += minutes;
+                this.data.stats.month.minutes += minutes;
+                this.data.user.totalHours = Math.floor(this.data.stats.month.minutes / 60);
+                
+                // اضافه کردن تجربه به درخت
+                this.data.tree.experience += minutes;
+                if (this.data.tree.experience >= this.data.tree.maxExperience) {
+                    this.data.tree.level++;
+                    this.data.user.level = this.data.tree.level;
+                    this.data.tree.experience = 0;
+                    this.data.tree.maxExperience = Math.floor(this.data.tree.maxExperience * 1.5);
+                    this.showNotification('تبریک!', `سطح شما به ${this.data.tree.level} ارتقاء یافت!`);
+                }
+                
+                // بررسی دستاوردها
+                this.checkAchievements();
+                
+                this.saveData();
+                return true;
+            }
+            
+            checkAchievements() {
+                const achievements = [
+                    { id: 'beginner', title: 'تازه‌کار', desc: 'اولین جلسه مطالعه', condition: () => this.data.stats.today.sessions >= 1 },
+                    { id: 'dedicated', title: 'متعهد', desc: '۵ جلسه مطالعه', condition: () => this.data.stats.today.sessions >= 5 },
+                    { id: 'streak_3', title: 'سه روزه', desc: '۳ روز متوالی', condition: () => this.data.user.streak >= 3 }
+                ];
+                
+                achievements.forEach(ach => {
+                    if (ach.condition() && !this.data.achievements.includes(ach.id)) {
+                        this.data.achievements.push(ach.id);
+                        this.showNotification('دستاورد جدید!', ach.title);
+                    }
+                });
+                
+                this.saveData();
+            }
+            
+            getBackupData() {
+                return JSON.stringify(this.data, null, 2);
+            }
+            
+            restoreFromBackup(backupData) {
+                try {
+                    const parsed = JSON.parse(backupData);
+                    this.data = parsed;
+                    this.saveData();
+                    return true;
+                } catch {
+                    return false;
+                }
+            }
+            
+            resetData() {
+                this.data = this.defaultData;
+                localStorage.removeItem(this.STORAGE_KEY);
+                return true;
+            }
+            
+            updateUI() {
+                // آمارها
+                document.getElementById('studyStreak').textContent = this.data.user.streak;
+                document.getElementById('totalHours').textContent = this.data.user.totalHours;
+                document.getElementById('achievementsCount').textContent = this.data.achievements.length;
+                document.getElementById('userLevel').textContent = this.data.user.level;
+                document.getElementById('sessionCount').textContent = this.data.timer.sessionsToday;
+                
+                // درخت
+                const treeProgress = Math.min(100, (this.data.tree.experience / this.data.tree.maxExperience) * 100);
+                document.getElementById('treeProgressFill').style.width = `${treeProgress}%`;
+                document.getElementById('treeProgressText').textContent = Math.floor(treeProgress);
+                document.getElementById('treeLevel').textContent = this.data.tree.level;
+                
+                // پیشرفت هفتگی
+                const weekProgress = Math.min(100, (this.data.stats.week.minutes / (7 * 60)) * 100);
+                const progressCircle = document.getElementById('progressCircle');
+                const circumference = 2 * Math.PI * 60;
+                const offset = circumference - (weekProgress / 100) * circumference;
+                progressCircle.style.strokeDashoffset = offset;
+                progressCircle.parentElement.querySelector('.progress-text').textContent = `${Math.floor(weekProgress)}%`;
+                
+                // آواتار و نام کاربر
+                this.updateUserDisplay();
+                
+                // دستاوردها
+                this.updateAchievementsUI();
+            }
+            
+            updateUserDisplay() {
+                const userDisplay = document.getElementById('userDisplayName');
+                const userAvatar = document.getElementById('userAvatar');
+                const welcome = document.getElementById('welcomeMessage');
+                
+                if (this.data.user.fullName) {
+                    userDisplay.textContent = this.data.user.fullName;
+                    welcome.textContent = `${this.data.user.firstName} عزیز، به MStudy Pro خوش آمدید!`;
+                    userAvatar.textContent = this.data.user.firstName.charAt(0) + this.data.user.lastName.charAt(0);
+                } else {
+                    userDisplay.textContent = 'مهمان';
+                    userAvatar.textContent = '?';
+                    welcome.textContent = 'به MStudy Pro خوش آمدید!';
+                }
+            }
+            
+            updateAchievementsUI() {
+                const grid = document.getElementById('achievementsGrid');
+                const achievements = [
+                    { id: 'beginner', title: 'تازه‌کار', desc: 'اولین جلسه', icon: 'fas fa-seedling', color: '#4cd964' },
+                    { id: 'dedicated', title: 'متعهد', desc: '۵ جلسه', icon: 'fas fa-leaf', color: '#2ecc71' },
+                    { id: 'streak_3', title: 'سه روزه', desc: '۳ روز متوالی', icon: 'fas fa-fire', color: '#ff6b6b' },
+                    { id: 'hours_10', title: 'ساعت‌کش', desc: '۱۰ ساعت', icon: 'fas fa-clock', color: '#3742fa' },
+                    { id: 'level_5', title: 'درخت رشد', desc: 'سطح ۵', icon: 'fas fa-tree', color: '#27ae60' },
+                    { id: 'marathon', title: 'ماراتن', desc: 'جلسه ۲ ساعته', icon: 'fas fa-running', color: '#ff9f1a' }
+                ];
+                
+                grid.innerHTML = '';
+                achievements.forEach(ach => {
+                    const isUnlocked = this.data.achievements.includes(ach.id);
+                    const el = document.createElement('div');
+                    el.className = `achievement-item ${isUnlocked ? '' : 'locked'}`;
+                    el.style.opacity = isUnlocked ? '1' : '0.5';
+                    el.innerHTML = `
+                        <div class="achievement-icon" style="color: ${ach.color}">
+                            <i class="${ach.icon}"></i>
+                        </div>
+                        <div class="achievement-title">${ach.title}</div>
+                        <div class="achievement-desc">${ach.desc}</div>
+                    `;
+                    grid.appendChild(el);
+                });
+            }
+            
+            showNotification(title, message) {
+                const notification = document.getElementById('notification');
+                const messageEl = document.getElementById('notificationMessage');
+                messageEl.textContent = `${title}: ${message}`;
+                notification.style.display = 'block';
+                setTimeout(() => {
+                    notification.style.display = 'none';
+                }, 3000);
+            }
+        }
+
+        // ============================================
+        // تایمر پومودورو
+        // ============================================
+        class PomodoroTimer {
+            constructor(dataManager) {
+                this.dataManager = dataManager;
+                this.minutes = dataManager.data.timer.focusTime;
+                this.seconds = 0;
+                this.isRunning = false;
+                this.isBreak = false;
+                this.timerInterval = null;
+                
+                this.init();
+            }
+            
+            init() {
+                this.updateDisplay();
+                
+                document.getElementById('startTimer').addEventListener('click', () => this.start());
+                document.getElementById('pauseTimer').addEventListener('click', () => this.pause());
+                document.getElementById('resetTimer').addEventListener('click', () => this.reset());
+                document.getElementById('focusTime').addEventListener('change', (e) => {
+                    this.dataManager.data.timer.focusTime = parseInt(e.target.value);
+                    if (!this.isRunning && !this.isBreak) {
+                        this.minutes = this.dataManager.data.timer.focusTime;
+                        this.updateDisplay();
+                    }
+                    this.dataManager.saveData();
+                });
+                document.getElementById('breakTime').addEventListener('change', (e) => {
+                    this.dataManager.data.timer.breakTime = parseInt(e.target.value);
+                    this.dataManager.saveData();
+                });
+            }
+            
+            start() {
+                if (this.isRunning) return;
+                this.isRunning = true;
+                document.getElementById('startTimer').disabled = true;
+                document.getElementById('startTimer').innerHTML = '<i class="fas fa-play"></i> در حال اجرا';
+                
+                this.timerInterval = setInterval(() => this.tick(), 1000);
+            }
+            
+            pause() {
+                this.isRunning = false;
+                document.getElementById('startTimer').disabled = false;
+                document.getElementById('startTimer').innerHTML = '<i class="fas fa-play"></i> ادامه';
+                clearInterval(this.timerInterval);
+            }
+            
+            reset() {
+                this.pause();
+                this.minutes = this.isBreak ? this.dataManager.data.timer.breakTime : this.dataManager.data.timer.focusTime;
+                this.seconds = 0;
+                this.updateDisplay();
+                document.getElementById('startTimer').innerHTML = '<i class="fas fa-play"></i> شروع';
+            }
+            
+            tick() {
+                if (this.seconds === 0) {
+                    if (this.minutes === 0) {
+                        this.completeSession();
+                        return;
+                    }
+                    this.minutes--;
+                    this.seconds = 59;
+                } else {
+                    this.seconds--;
+                }
+                this.updateDisplay();
+            }
+            
+            completeSession() {
+                clearInterval(this.timerInterval);
+                
+                if (!this.isBreak) {
+                    // پایان جلسه تمرکز
+                    this.dataManager.addStudyTime(this.dataManager.data.timer.focusTime);
+                    this.dataManager.data.timer.sessionsToday++;
+                    this.isBreak = true;
+                    this.minutes = this.dataManager.data.timer.breakTime;
+                    document.getElementById('timerMode').textContent = 'استراحت';
+                    this.dataManager.showNotification('آفرین!', 'جلسه تمرکز تمام شد. استراحت کنید.');
+                } else {
+                    // پایان استراحت
+                    this.isBreak = false;
+                    this.minutes = this.dataManager.data.timer.focusTime;
+                    document.getElementById('timerMode').textContent = 'تمرکز';
+                    this.dataManager.showNotification('آماده باشید!', 'زمان استراحت تمام شد.');
+                }
+                
+                this.seconds = 0;
+                this.updateDisplay();
+                document.getElementById('startTimer').disabled = false;
+                document.getElementById('startTimer').innerHTML = '<i class="fas fa-play"></i> شروع جلسه بعدی';
+                
+                // شروع خودکار جلسه بعدی
+                setTimeout(() => {
+                    if (confirm(this.isBreak ? 'استراحت تمام شد. جلسه تمرکز جدید شروع شود؟' : 'آماده جلسه بعدی هستید؟')) {
+                        this.start();
+                    }
+                }, 1000);
+            }
+            
+            updateDisplay() {
+                const displayMinutes = this.minutes.toString().padStart(2, '0');
+                const displaySeconds = this.seconds.toString().padStart(2, '0');
+                document.getElementById('timerDisplay').textContent = `${displayMinutes}:${displaySeconds}`;
+            }
+        }
+
+        // ============================================
+        // سیستم انگیزشی
+        // ============================================
+        class MotivationSystem {
+            constructor() {
+                this.quotes = [
+                    { text: "موفقیت نهایی نیست، شکست مرگبار نیست؛ شجاعت ادامه دادن است که اهمیت دارد.", author: "وینستون چرچیل" },
+                    { text: "آینده متعلق به کسانی است که برای آماده شدنش امروز تلاش می‌کنند.", author: "مالکوم ایکس" },
+                    { text: "رمز موفقیت شروع کردن است. رمز شروع کردن، تقسیم کارهای سخت به کارهای کوچک و سپس شروع با اولین کار است.", author: "مارک تواین" },
+                    { text: "تنها راه انجام کارهای بزرگ، دوست داشتن کاری است که انجام می‌دهی.", author: "استیو جابز" },
+                    { text: "هیچ چیز غیرممکن نیست، خود کلمه می‌گوید من ممکنم!", author: "آدری هپبورن" }
+                ];
+                this.currentIndex = 0;
+                
+                this.init();
+            }
+            
+            init() {
+                this.showQuote(0);
+                document.getElementById('newQuote').addEventListener('click', () => this.showRandomQuote());
+                document.getElementById('playMusic').addEventListener('click', () => this.playMusic());
+            }
+            
+            showRandomQuote() {
+                let newIndex;
+                do {
+                    newIndex = Math.floor(Math.random() * this.quotes.length);
+                } while (newIndex === this.currentIndex);
+                
+                this.showQuote(newIndex);
+            }
+            
+            showQuote(index) {
+                this.currentIndex = index;
+                const quote = this.quotes[this.currentIndex];
+                document.getElementById('dailyQuote').textContent = `"${quote.text}"`;
+                document.getElementById('quoteAuthor').textContent = `- ${quote.author}`;
+            }
+            
+            playMusic() {
+                alert('🎵 در حال پخش موزیک تمرکز... (در نسخه واقعی، موزیک پخش می‌شود)');
+            }
+        }
+
+        // ============================================
+        // مدیریت رابط کاربری
+        // ============================================
+        class UIManager {
+            constructor(dataManager) {
+                this.dataManager = dataManager;
+                
+                this.init();
+            }
+            
+            init() {
+                // منوی موبایل
+                document.getElementById('mobileMenuBtn').addEventListener('click', () => this.toggleMobileMenu());
+                
+                // ناوبری
+                document.querySelectorAll('.nav-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const section = btn.getAttribute('data-section');
+                        this.handleNavigation(section, btn);
+                    });
+                });
+                
+                // پروفایل
+                document.getElementById('userProfile').addEventListener('click', () => this.showProfileModal());
+                document.getElementById('closeProfileModal').addEventListener('click', () => this.hideProfileModal());
+                document.getElementById('saveProfile').addEventListener('click', () => this.saveProfile());
+                
+                // پشتیبان‌گیری
+                document.getElementById('backupData').addEventListener('click', () => this.showBackupModal());
+                document.getElementById('closeBackupModal').addEventListener('click', () => this.hideBackupModal());
+                document.getElementById('copyBackup').addEventListener('click', () => this.copyBackup());
+                
+                // بازیابی
+                document.getElementById('restoreData').addEventListener('click', () => this.showRestoreModal());
+                document.getElementById('closeRestoreModal').addEventListener('click', () => this.hideRestoreModal());
+                document.getElementById('confirmRestore').addEventListener('click', () => this.confirmRestore());
+                
+                // ریست
+                document.getElementById('resetData').addEventListener('click', () => this.resetData());
+                
+                // دکمه‌های عملیاتی
+                document.getElementById('themeToggle').addEventListener('click', () => this.toggleTheme());
+                document.getElementById('musicToggle').addEventListener('click', () => this.toggleMusic());
+                document.getElementById('emergencyBtn').addEventListener('click', () => this.showEmergencyAdvice());
+                
+                // ذرات معلق
+                this.createParticles();
+            }
+            
+            toggleMobileMenu() {
+                const nav = document.querySelector('.nav');
+                const btn = document.getElementById('mobileMenuBtn');
+                
+                if (nav.style.display === 'flex') {
+                    nav.style.display = 'none';
+                    btn.innerHTML = '<i class="fas fa-bars"></i>';
+                } else {
+                    nav.style.display = 'flex';
+                    nav.style.flexDirection = 'column';
+                    nav.style.position = 'absolute';
+                    nav.style.top = '100%';
+                    nav.style.right = '0';
+                    nav.style.background = 'var(--card-bg)';
+                    nav.style.padding = '1rem';
+                    nav.style.borderRadius = '10px';
+                    nav.style.boxShadow = 'var(--shadow)';
+                    btn.innerHTML = '<i class="fas fa-times"></i>';
+                }
+            }
+            
+            handleNavigation(section, btn) {
+                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                if (section === 'profile') {
+                    this.showProfileModal();
+                } else if (section === 'stats') {
+                    this.dataManager.updateUI();
+                    this.dataManager.showNotification('آمار', 'آمارهای شما به‌روزرسانی شدند.');
+                }
+            }
+            
+            showProfileModal() {
+                const modal = document.getElementById('profileModal');
+                const firstName = document.getElementById('firstName');
+                const lastName = document.getElementById('lastName');
+                
+                firstName.value = this.dataManager.data.user.firstName || '';
+                lastName.value = this.dataManager.data.user.lastName || '';
+                
+                modal.style.display = 'block';
+                setTimeout(() => modal.classList.add('active'), 10);
+            }
+            
+            hideProfileModal() {
+                const modal = document.getElementById('profileModal');
+                modal.classList.remove('active');
+                setTimeout(() => modal.style.display = 'none', 300);
+            }
+            
+            saveProfile() {
+                const firstName = document.getElementById('firstName').value.trim();
+                const lastName = document.getElementById('lastName').value.trim();
+                
+                if (!firstName || !lastName) {
+                    this.dataManager.showNotification('خطا', 'لطفاً نام و نام خانوادگی را وارد کنید.');
+                    return;
+                }
+                
+                this.dataManager.updateUserProfile(firstName, lastName);
+                this.hideProfileModal();
+                this.dataManager.showNotification('موفقیت', 'پروفایل ذخیره شد.');
+            }
+            
+            showBackupModal() {
+                const modal = document.getElementById('backupModal');
+                const textarea = document.getElementById('backupDataText');
+                
+                textarea.value = this.dataManager.getBackupData();
+                modal.style.display = 'block';
+                setTimeout(() => modal.classList.add('active'), 10);
+            }
+            
+            hideBackupModal() {
+                const modal = document.getElementById('backupModal');
+                modal.classList.remove('active');
+                setTimeout(() => modal.style.display = 'none', 300);
+            }
+            
+            copyBackup() {
+                const textarea = document.getElementById('backupDataText');
+                textarea.select();
+                document.execCommand('copy');
+                this.dataManager.showNotification('موفقیت', 'کد پشتیبان کپی شد.');
+            }
+            
+            showRestoreModal() {
+                const modal = document.getElementById('restoreModal');
+                modal.style.display = 'block';
+                setTimeout(() => modal.classList.add('active'), 10);
+            }
+            
+            hideRestoreModal() {
+                const modal = document.getElementById('restoreModal');
+                modal.classList.remove('active');
+                setTimeout(() => modal.style.display = 'none', 300);
+            }
+            
+            confirmRestore() {
+                const textarea = document.getElementById('restoreDataText');
+                const backupData = textarea.value.trim();
+                
+                if (!backupData) {
+                    this.dataManager.showNotification('خطا', 'لطفاً کد پشتیبان را وارد کنید.');
+                    return;
+                }
+                
+                if (confirm('آیا مطمئن هستید؟ داده‌های فعلی جایگزین می‌شوند.')) {
+                    const success = this.dataManager.restoreFromBackup(backupData);
+                    if (success) {
+                        this.dataManager.showNotification('موفقیت', 'داده‌ها بازیابی شدند.');
+                        this.hideRestoreModal();
+                        location.reload();
+                    } else {
+                        this.dataManager.showNotification('خطا', 'کد پشتیبان نامعتبر است.');
+                    }
+                }
+            }
+            
+            resetData() {
+                if (confirm('⚠️ آیا مطمئن هستید که می‌خواهید تمام داده‌ها را پاک کنید؟')) {
+                    this.dataManager.resetData();
+                    this.dataManager.showNotification('توجه', 'همه داده‌ها پاک شدند.');
+                    location.reload();
+                }
+            }
+            
+            toggleTheme() {
+                document.body.classList.toggle('dark-theme');
+                const btn = document.getElementById('themeToggle');
+                btn.innerHTML = document.body.classList.contains('dark-theme') ? 
+                    '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+            }
+            
+            toggleMusic() {
+                const btn = document.getElementById('musicToggle');
+                const isPlaying = btn.classList.toggle('playing');
+                btn.innerHTML = isPlaying ? 
+                    '<i class="fas fa-volume-up"></i>' : '<i class="fas fa-music"></i>';
+                btn.style.background = isPlaying ? 
+                    'linear-gradient(135deg, #4cd964 0%, #2ecc71 100%)' : 'var(--primary)';
+            }
+            
+            showEmergencyAdvice() {
+                const advices = [
+                    "۵ دقیقه استراحت کن و برگرد!",
+                    "یادت باشه هدف نهایی‌ات چیه!",
+                    "آب بخور و چند حرکت کششی انجام بده!",
+                    "یه نفس عمیق بکش و ادامه بده!",
+                    "فقط ۲۵ دقیقه دیگه! می‌تونی انجامش بدی!"
+                ];
+                const randomAdvice = advices[Math.floor(Math.random() * advices.length)];
+                this.dataManager.showNotification('💪 انگیزه!', randomAdvice);
+            }
+            
+            createParticles() {
+                const container = document.getElementById('particles');
+                for (let i = 0; i < 30; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.width = `${Math.random() * 20 + 5}px`;
+                    particle.style.height = particle.style.width;
+                    particle.style.left = `${Math.random() * 100}%`;
+                    particle.style.top = `${Math.random() * 100}%`;
+                    particle.style.opacity = Math.random() * 0.5 + 0.2;
+                    particle.style.animationDelay = `${Math.random() * 15}s`;
+                    container.appendChild(particle);
+                }
+            }
+        }
+
+        // ============================================
+        // راه‌اندازی برنامه
+        // ============================================
+        document.addEventListener('DOMContentLoaded', () => {
+            // ایجاد سیستم‌ها
+            window.dataManager = new DataManager();
+            window.pomodoroTimer = new PomodoroTimer(window.dataManager);
+            window.motivationSystem = new MotivationSystem();
+            window.uiManager = new UIManager(window.dataManager);
+            
+            // به‌روزرسانی UI اولیه
+            window.dataManager.updateUI();
+            
+            // بررسی تاریخ برای بروزرسانی توالی
+            const lastLogin = window.dataManager.data.user.lastLogin;
+            const today = new Date().toDateString();
+            if (lastLogin !== today) {
+                window.dataManager.data.user.lastLogin = today;
+                window.dataManager.data.user.streak++;
+                window.dataManager.saveData();
+                window.dataManager.updateUI();
+            }
+            
+            // نمایش پیام خوش‌آمدگویی
+            setTimeout(() => {
+                if (!window.dataManager.data.user.fullName) {
+                    window.dataManager.showNotification('خوش آمدید!', 'لطفاً پروفایل خود را تکمیل کنید.');
+                } else {
+                    window.dataManager.showNotification('خوش آمدید!', `${window.dataManager.data.user.firstName} عزیز، موفق باشید!`);
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
